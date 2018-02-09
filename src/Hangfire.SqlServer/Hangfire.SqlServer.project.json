@@ -1,11 +1,11 @@
 ﻿{
   "dependencies": {
-    "Dapper": "1.50.1"
+    "Dapper.StrongName": "1.50.4"
   },
   "runtimes": {
     "win": {}
   },
   "frameworks": {
-    "net45": {}
+    "net46": {}
   }
 }

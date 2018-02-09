@@ -8,6 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("3d96bf2f-8854-4872-aee3-faf81d121a4d")]
 [assembly: CLSCompliant(true)]
 
-[assembly: InternalsVisibleTo("Hangfire.SqlServer.Tests")]
+//[assembly: InternalsVisibleTo("Hangfire.SqlServer.Tests")]
 // Allow the generation of mocks for internal types
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+//[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
