@@ -463,7 +463,7 @@ WriteLiteral("</code>\r\n");
             #line default
             #line hidden
 WriteLiteral("                                    </td>\r\n                                    <t" +
-"d class=\"min-width\">\r\n");
+"d class=\"word-break\">\r\n");
 
 
             

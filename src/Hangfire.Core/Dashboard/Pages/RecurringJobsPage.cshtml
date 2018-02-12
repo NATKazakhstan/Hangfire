@@ -118,7 +118,7 @@
                                             <code>@job.Cron</code>
                                         }
                                     </td>
-                                    <td class="min-width">
+                                    <td class="word-break">
                                         @if (!String.IsNullOrWhiteSpace(job.TimeZoneId))
                                         {
                                             <span title="@TimeZoneInfo.FindSystemTimeZoneById(job.TimeZoneId).DisplayName" data-container="body">@job.TimeZoneId</span>
