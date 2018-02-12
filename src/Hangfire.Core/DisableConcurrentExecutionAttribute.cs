@@ -23,17 +23,19 @@ namespace Hangfire
     public class DisableConcurrentExecutionAttribute : JobFilterAttribute, IServerFilter
     {
         private readonly int _timeoutInSeconds;
+        private readonly string _resourceName;
 
-        public DisableConcurrentExecutionAttribute(int timeoutInSeconds)
+        public DisableConcurrentExecutionAttribute(int timeoutInSeconds, string resourceName = null)
         {
             if (timeoutInSeconds < 0) throw new ArgumentException("Timeout argument value should be greater that zero.");
 
             _timeoutInSeconds = timeoutInSeconds;
+            _resourceName = resourceName;
         }
 
         public void OnPerforming(PerformingContext filterContext)
         {
-            var resource = GetResource(filterContext.BackgroundJob.Job);
+            var resource = _resourceName ?? GetResource(filterContext.BackgroundJob.Job);
 
             var timeout = TimeSpan.FromSeconds(_timeoutInSeconds);
 
