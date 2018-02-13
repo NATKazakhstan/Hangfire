@@ -65,10 +65,13 @@ namespace Hangfire
 
         public void OnStateElection(ElectStateContext context)
         {
-            var enqueuedState = context.CandidateState as EnqueuedState;
-            if (enqueuedState != null)
-            {
+            if (context.CandidateState is EnqueuedState enqueuedState)
                 enqueuedState.Queue = Queue;
+
+            if (context.CandidateState is AwaitingState awState)
+            {
+                if (awState.NextState is EnqueuedState nextState)
+                    nextState.Queue = Queue;
             }
         }
     }
