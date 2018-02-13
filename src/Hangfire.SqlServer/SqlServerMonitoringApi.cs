@@ -103,10 +103,32 @@ namespace Hangfire.SqlServer
                     Job = job,
                     InScheduledState = ScheduledState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
                     EnqueueAt = JobHelper.DeserializeNullableDateTime(stateData["EnqueueAt"]) ?? DateTime.MinValue,
-                    ScheduledAt = JobHelper.DeserializeNullableDateTime(stateData["ScheduledAt"])
+                    ScheduledAt = JobHelper.DeserializeNullableDateTime(stateData["ScheduledAt"]),
                 }));
         }
 
+        public JobList<AllJobDto> AllJobs(string queue, int @from, int count)
+        {
+            return UseConnection(
+                connection => GetJobs(
+                    connection,
+                    from,
+                    count,
+                    DeletedState.StateName,
+                    queue,
+                    (sqlJob, job, stateData) => new AllJobDto
+                        {
+                            Job = job,
+                            InProcessingState = ProcessingState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
+                            InEnqueuedState = EnqueuedState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
+                            InFailedState = FailedState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
+                            InScheduledState = ScheduledState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
+                            InSucceededState = SucceededState.StateName.Equals(sqlJob.StateName, StringComparison.OrdinalIgnoreCase),
+                            ServerId = stateData.ContainsKey("ServerId") ? stateData["ServerId"] : stateData["ServerName"],
+                            StateName = sqlJob.StateName,
+                        }));
+        }
+        
         public IDictionary<DateTime, long> SucceededByDatesCount()
         {
             return UseConnection(connection => 
@@ -521,6 +543,40 @@ order by j.Id desc";
             var jobs = connection.Query<SqlJob>(
                         jobsSql,
                         new { stateName = stateName, start = @from + 1, end = @from + count },
+                        commandTimeout: _storage.CommandTimeout)
+                        .ToList();
+
+            return DeserializeJobs(jobs, selector);
+        }
+
+        private JobList<TDto> GetJobs<TDto>(
+            DbConnection connection,
+            int from,
+            int count,
+            string notStateName,
+            string queue,
+            Func<SqlJob, Job, SafeDictionary<string, string>, TDto> selector)
+        {
+            string jobsSql = 
+$@";with cte as 
+(
+  select j.Id, row_number() over (order by j.Id desc) as row_num
+  from [{_storage.SchemaName}].Job j with (nolock, forceseek)
+  where j.StateName != @stateName
+    and exists(select * from [{_storage.SchemaName}].State s where s.[JobId] = j.id 
+                and ((s.Name = 'Enqueued' and s.Data like '%""Queue"":""' + @queue + '""%') 
+                     or (s.Name = 'Awaiting' and s.Data like '%""Queue\"":\""' + @queue + '\""%')))
+)
+select j.*, s.Reason as StateReason, s.Data as StateData
+from [{_storage.SchemaName}].Job j with (nolock)
+inner join cte on cte.Id = j.Id 
+left join [{_storage.SchemaName}].State s with (nolock) on j.StateId = s.Id
+where cte.row_num between @start and @end
+order by j.Id desc";
+
+            var jobs = connection.Query<SqlJob>(
+                        jobsSql,
+                        new { stateName = notStateName, start = @from + 1, end = @from + count, queue = queue },
                         commandTimeout: _storage.CommandTimeout)
                         .ToList();
 

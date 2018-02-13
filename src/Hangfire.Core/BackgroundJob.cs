@@ -22,6 +22,8 @@ using Hangfire.States;
 
 namespace Hangfire
 {
+    using System.Linq;
+
     /// <summary>
     /// Provides static methods for creating <i>fire-and-forget</i>, <i>delayed</i>
     /// jobs and <i>continuations</i> as well as re-queue and delete existing
@@ -428,6 +430,94 @@ namespace Hangfire
         {
             var client = ClientFactory();
             return client.ContinueWith(parentId, methodCall, options: options);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Sequence(string queue, [NotNull, InstantHandle] Expression<Action> methodCall)
+        {
+            var lastJob = JobStorage.Current.GetMonitoringApi().AllJobs(queue, 0, 1);
+            var client = ClientFactory();
+            if (lastJob.Count == 0)
+                return client.Enqueue(methodCall);
+            return client.ContinueWith(lastJob[0].Key, methodCall);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Sequence(string queue, [NotNull, InstantHandle] Expression<Func<Task>> methodCall)
+        {
+            var lastJob = JobStorage.Current.GetMonitoringApi().AllJobs(queue, 0, 1);
+            var client = ClientFactory();
+            if (lastJob.Count == 0)
+                return client.Enqueue(methodCall);
+            return client.ContinueWith(lastJob[0].Key, methodCall);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Sequence<T>(string queue, [NotNull, InstantHandle] Expression<Action<T>> methodCall)
+        {
+            var lastJob = JobStorage.Current.GetMonitoringApi().AllJobs(queue, 0, 1);
+            var client = ClientFactory();
+            if (lastJob.Count == 0)
+                return client.Enqueue(methodCall);
+            return client.ContinueWith(lastJob[0].Key, methodCall);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// </summary>
+        /// <param name="queue"></param>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Sequence<T>(string queue, [NotNull, InstantHandle] Expression<Func<T, Task>> methodCall)
+        {
+            var lastJob = JobStorage.Current.GetMonitoringApi().AllJobs(queue, 0, 1);
+            var client = ClientFactory();
+            if (lastJob.Count == 0)
+                return client.Enqueue(methodCall);
+            return client.ContinueWith(lastJob[0].Key, methodCall);
         }
     }
 }
