@@ -110,11 +110,10 @@ namespace Hangfire.SqlServer
         public JobList<AllJobDto> AllJobs(string queue, int @from, int count)
         {
             return UseConnection(
-                connection => GetJobs(
+                connection => GetAllJobs(
                     connection,
                     from,
                     count,
-                    DeletedState.StateName,
                     queue,
                     (sqlJob, job, stateData) => new AllJobDto
                         {
@@ -549,11 +548,10 @@ order by j.Id desc";
             return DeserializeJobs(jobs, selector);
         }
 
-        private JobList<TDto> GetJobs<TDto>(
+        private JobList<TDto> GetAllJobs<TDto>(
             DbConnection connection,
             int from,
             int count,
-            string notStateName,
             string queue,
             Func<SqlJob, Job, SafeDictionary<string, string>, TDto> selector)
         {
@@ -562,7 +560,8 @@ $@";with cte as
 (
   select j.Id, row_number() over (order by j.Id desc) as row_num
   from [{_storage.SchemaName}].Job j with (nolock, forceseek)
-  where j.StateName != @stateName
+  where j.StateName != @dStateName
+    and j.StateName != @sStateName
     and exists(select * from [{_storage.SchemaName}].State s where s.[JobId] = j.id 
                 and ((s.Name = 'Enqueued' and s.Data like '%""Queue"":""' + @queue + '""%') 
                      or (s.Name = 'Awaiting' and s.Data like '%""Queue\"":\""' + @queue + '\""%')))
@@ -575,10 +574,17 @@ where cte.row_num between @start and @end
 order by j.Id desc";
 
             var jobs = connection.Query<SqlJob>(
-                        jobsSql,
-                        new { stateName = notStateName, start = @from + 1, end = @from + count, queue = queue },
-                        commandTimeout: _storage.CommandTimeout)
-                        .ToList();
+                    jobsSql,
+                    new
+                        {
+                            dStateName = DeletedState.StateName,
+                            sStateName = SucceededState.StateName,
+                            start = @from + 1,
+                            end = @from + count,
+                            queue = queue
+                        },
+                    commandTimeout: _storage.CommandTimeout)
+                .ToList();
 
             return DeserializeJobs(jobs, selector);
         }
