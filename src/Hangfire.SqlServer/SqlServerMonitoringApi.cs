@@ -562,9 +562,11 @@ $@";with cte as
   from [{_storage.SchemaName}].Job j with (nolock, forceseek)
   where j.StateName != @dStateName
     and j.StateName != @sStateName
-    and exists(select * from [{_storage.SchemaName}].State s where s.[JobId] = j.id 
+    and (exists(select * from [{_storage.SchemaName}].State s where s.[JobId] = j.id 
                 and ((s.Name = 'Enqueued' and s.Data like '%""Queue"":""' + @queue + '""%') 
                      or (s.Name = 'Awaiting' and s.Data like '%""Queue\"":\""' + @queue + '\""%')))
+        or @queue = ''
+        )
 )
 select j.*, s.Reason as StateReason, s.Data as StateData
 from [{_storage.SchemaName}].Job j with (nolock)
