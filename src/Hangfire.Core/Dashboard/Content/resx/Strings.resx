@@ -523,4 +523,19 @@
   <data name="HomePage_GraphHover_Succeeded" xml:space="preserve">
     <value>Succeeded</value>
   </data>
+  <data name="RecurringJobsPage_Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="RecurringJobsPage_Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="RecurringJobsPage_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="RecurringJobsPage_Disabling" xml:space="preserve">
+    <value>Disabling...</value>
+  </data>
+  <data name="RecurringJobsPage_Enabling" xml:space="preserve">
+    <value>Enabling...</value>
+  </data>
 </root>

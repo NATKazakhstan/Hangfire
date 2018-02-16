@@ -175,6 +175,14 @@ namespace Hangfire.Dashboard
                 "/recurring/trigger", 
                 (manager, jobId) => manager.Trigger(jobId));
 
+            Routes.AddRecurringBatchCommand(
+                "/recurring/disable",
+                (manager, jobId) => manager.Disable(jobId));
+
+            Routes.AddRecurringBatchCommand(
+                "/recurring/enable",
+                (manager, jobId) => manager.Enable(jobId));
+
             Routes.AddRazorPage("/servers", x => new ServersPage());
             Routes.AddRazorPage("/retries", x => new RetriesPage());
 

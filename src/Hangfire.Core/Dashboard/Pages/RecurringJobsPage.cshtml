@@ -56,6 +56,22 @@
                     </button>
 
                     <button class="js-jobs-list-command btn btn-sm btn-default"
+                            data-url="@Url.To("/recurring/disable")"
+                            data-loading-text="@Strings.RecurringJobsPage_Disabling"
+                            disabled="disabled">
+                        <span class="glyphicon glyphicon-pause"></span>
+                        @Strings.RecurringJobsPage_Disable
+                    </button>
+
+                    <button class="js-jobs-list-command btn btn-sm btn-default"
+                            data-url="@Url.To("/recurring/enable")"
+                            data-loading-text="@Strings.RecurringJobsPage_Enabling"
+                            disabled="disabled">
+                        <span class="glyphicon glyphicon-play"></span>
+                        @Strings.RecurringJobsPage_Enable
+                    </button>
+
+                    <button class="js-jobs-list-command btn btn-sm btn-default"
                             data-url="@Url.To("/recurring/remove")"
                             data-loading-text="@Strings.Common_Deleting"
                             data-confirm="@Strings.Common_DeleteConfirm"
@@ -65,9 +81,9 @@
                     </button>
 
                     @if (pager != null)
-                    {
-                        @: @Html.PerPageSelector(pager)
-                    }
+    {
+                @: @Html.PerPageSelector(pager)
+}
                 </div>
 
                 <div class="table-responsive">
@@ -93,7 +109,12 @@
                                     <td>
                                         <input type="checkbox" class="js-jobs-list-checkbox" name="jobs[]" value="@job.Id" />
                                     </td>
-                                    <td class="min-width">@job.Id</td>
+                                    <td class="min-width">@job.Id
+                                    @if (job.Disabled)
+                                    {
+                                        <br/><span class="metric-warning">(@Strings.RecurringJobsPage_Disabled)</span> 
+                                    }
+                                    </td>
                                     <td class="min-width">
                                         @* ReSharper disable once EmptyGeneralCatchClause *@
                                         @{

@@ -75,10 +75,11 @@ namespace Hangfire.Storage
                 }
 
                 var dto = new RecurringJobDto
-                {
-                    Id = id,
-                    Cron = hash["Cron"]
-                };
+                    {
+                        Id = id,
+                        Cron = hash["Cron"],
+                        Disabled = hash.ContainsKey("Disabled") && Boolean.TryParse(hash["Disabled"], out var disabled) && disabled
+                    };
 
                 try
                 {

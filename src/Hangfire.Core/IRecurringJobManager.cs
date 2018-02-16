@@ -28,6 +28,8 @@ namespace Hangfire
             [NotNull] RecurringJobOptions options);
 
         void Trigger([NotNull] string recurringJobId);
+        void Disable([NotNull] string recurringJobId);
+        void Enable([NotNull] string recurringJobId);
         void RemoveIfExists([NotNull] string recurringJobId);
     }
 }

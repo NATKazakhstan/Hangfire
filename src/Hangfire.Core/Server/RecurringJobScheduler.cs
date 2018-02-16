@@ -173,8 +173,9 @@ namespace Hangfire.Server
                 var changedFields = new Dictionary<string, string>();
 
                 var lastInstant = GetLastInstant(recurringJob, nowInstant);
-                
-                if (nowInstant.GetNextInstants(lastInstant).Any())
+
+                var disabled = recurringJob.ContainsKey("Disabled") && Boolean.TryParse(recurringJob["Disabled"], out var parseDisabled) && parseDisabled;
+                if (nowInstant.GetNextInstants(lastInstant).Any() && !disabled)
                 {
                     var state = new EnqueuedState { Reason = "Triggered by recurring job scheduler" };
                     if (recurringJob.ContainsKey("Queue") && !String.IsNullOrEmpty(recurringJob["Queue"]))

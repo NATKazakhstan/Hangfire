@@ -143,5 +143,37 @@ namespace Hangfire
                 throw new ArgumentException("CRON expression is invalid. Please see the inner exception for details.", nameof(cronExpression), ex);
             }
         }
+
+        public void Disable(string recurringJobId)
+        {
+            if (recurringJobId == null) throw new ArgumentNullException(nameof(recurringJobId));
+
+            using (var connection = _storage.GetConnection())
+            {
+                var hash = connection.GetAllEntriesFromHash($"recurring-job:{recurringJobId}");
+                if (hash == null)
+                {
+                    return;
+                }
+
+                connection.SetRangeInHash($"recurring-job:{recurringJobId}", new[] { new KeyValuePair<string, string>("Disabled", "true") });
+            }
+        }
+
+        public void Enable(string recurringJobId)
+        {
+            if (recurringJobId == null) throw new ArgumentNullException(nameof(recurringJobId));
+
+            using (var connection = _storage.GetConnection())
+            {
+                var hash = connection.GetAllEntriesFromHash($"recurring-job:{recurringJobId}");
+                if (hash == null)
+                {
+                    return;
+                }
+
+                connection.SetRangeInHash($"recurring-job:{recurringJobId}", new[] { new KeyValuePair<string, string>("Disabled", "false") });
+            }
+        }
     }
 }
