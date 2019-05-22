@@ -83,8 +83,8 @@ namespace Hangfire.Storage
 
                 try
                 {
-                    var invocationData = JobHelper.FromJson<InvocationData>(hash["Job"]);
-                    dto.Job = invocationData.Deserialize();
+                    var invocationData = InvocationData.DeserializePayload(hash["Job"]);
+                    dto.Job = invocationData.DeserializeJob();
                 }
                 catch (JobLoadException ex)
                 {
@@ -93,7 +93,7 @@ namespace Hangfire.Storage
 
                 if (hash.ContainsKey("NextExecution"))
                 {
-                    dto.NextExecution = JobHelper.DeserializeDateTime(hash["NextExecution"]);
+                    dto.NextExecution = JobHelper.DeserializeNullableDateTime(hash["NextExecution"]);
                 }
 
                 if (hash.ContainsKey("LastJobId") && !string.IsNullOrWhiteSpace(hash["LastJobId"]))
@@ -114,7 +114,7 @@ namespace Hangfire.Storage
 
                 if (hash.ContainsKey("LastExecution"))
                 {
-                    dto.LastExecution = JobHelper.DeserializeDateTime(hash["LastExecution"]);
+                    dto.LastExecution = JobHelper.DeserializeNullableDateTime(hash["LastExecution"]);
                 }
 
                 if (hash.ContainsKey("TimeZoneId"))
@@ -124,12 +124,12 @@ namespace Hangfire.Storage
 
                 if (hash.ContainsKey("CreatedAt"))
                 {
-                    dto.CreatedAt = JobHelper.DeserializeDateTime(hash["CreatedAt"]);
+                    dto.CreatedAt = JobHelper.DeserializeNullableDateTime(hash["CreatedAt"]);
                 }
 
                 result.Add(dto);
             }
-
+            
             return result;
         }
     }
