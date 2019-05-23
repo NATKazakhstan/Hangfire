@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Hangfire.Dashboard.Resources {
     using System;
     
@@ -39,7 +41,7 @@ namespace Hangfire.Dashboard.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hangfire.Dashboard.Content.resx.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hangfire.Dashboard.Content.resx.Strings", typeof(Strings).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -187,6 +189,15 @@ namespace Hangfire.Dashboard.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        public static string Common_Disabled {
+            get {
+                return ResourceManager.GetString("Common_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enqueue jobs.
         /// </summary>
         public static string Common_EnqueueButton_Text {
@@ -259,7 +270,7 @@ namespace Hangfire.Dashboard.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Less details....
+        ///   Ищет локализованную строку, похожую на Fewer details....
         /// </summary>
         public static string Common_LessDetails {
             get {
@@ -504,7 +515,7 @@ namespace Hangfire.Dashboard.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Dashboard.
+        ///   Ищет локализованную строку, похожую на Overview.
         /// </summary>
         public static string HomePage_Title {
             get {
@@ -1043,6 +1054,15 @@ namespace Hangfire.Dashboard.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cron expression is invalid or don&apos;t have any occurrences over the next 100 years.
+        /// </summary>
+        public static string RecurringJobsPage_RecurringJobDisabled_Tooltip {
+            get {
+                return ResourceManager.GetString("RecurringJobsPage_RecurringJobDisabled_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cron.
         /// </summary>
         public static string RecurringJobsPage_Table_Cron {
@@ -1187,11 +1207,48 @@ namespace Hangfire.Dashboard.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Active.
+        /// </summary>
+        public static string ServersPage_Active {
+            get {
+                return ResourceManager.GetString("ServersPage_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на There are no active servers. Background tasks will not be processed..
         /// </summary>
         public static string ServersPage_NoServers {
             get {
                 return ResourceManager.GetString("ServersPage_NoServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Some of the servers don&apos;t have heartbeat reported within the last minute and may be aborted. If they don&apos;t report heartbeat in the near future, they will be removed automatically after timeout is exceeded, no manual action is required.
+        ///                    Incomplete background jobs running on those servers will be re-queued automatically, but you can speed up the process by checking the &lt;a href=&quot;{0}&quot;&gt;Processing Jobs&lt;/a&gt; page..
+        /// </summary>
+        public static string ServersPage_Note_Text {
+            get {
+                return ResourceManager.GetString("ServersPage_Note_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Aborted servers will be removed automatically.
+        /// </summary>
+        public static string ServersPage_Note_Title {
+            get {
+                return ResourceManager.GetString("ServersPage_Note_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Possibly aborted.
+        /// </summary>
+        public static string ServersPage_Possibly_Aborted {
+            get {
+                return ResourceManager.GetString("ServersPage_Possibly_Aborted", resourceCulture);
             }
         }
         

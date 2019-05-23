@@ -28,16 +28,14 @@ namespace Hangfire.Dashboard
             "bootstrap.min.js",
             "moment.min.js",
             "moment-with-locales.min.js",
-            "d3.min.js", 
-            "d3.layout.min.js", 
-            "rickshaw.min.js", 
+            "Chart.min.js",
+            "chartjs-plugin-streaming.min.js",
             "hangfire.js"
         };
 
         private static readonly string[] Stylesheets =
         {
-            "bootstrap.min.css", 
-            "rickshaw.min.css", 
+            "bootstrap.min.css",
             "hangfire.css"
         };
 
@@ -152,7 +150,7 @@ namespace Hangfire.Dashboard
                 "/jobs/actions/requeue/(?<JobId>.+)",
                 context =>
                 {
-                    var client = new BackgroundJobClient(context.Storage);
+                    var client = context.GetBackgroundJobClient();
                     return client.ChangeState(context.UriMatch.Groups["JobId"].Value, CreateEnqueuedState());
                 });
 
@@ -160,7 +158,7 @@ namespace Hangfire.Dashboard
                 "/jobs/actions/delete/(?<JobId>.+)",
                 context =>
                 {
-                    var client = new BackgroundJobClient(context.Storage);
+                    var client = context.GetBackgroundJobClient();
                     return client.ChangeState(context.UriMatch.Groups["JobId"].Value, CreateDeletedState());
                 });
 
