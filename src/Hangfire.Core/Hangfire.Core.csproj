@@ -60,7 +60,7 @@
     <MSBuildFullPath>$(MSBuildProgramFiles32)\MSBuild\14.0\bin\MSBuild.exe</MSBuildFullPath>
     <RazorProjectFile>Razor.build</RazorProjectFile>
     <InnerTargets>GenerateRazorClasses;Build</InnerTargets>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
