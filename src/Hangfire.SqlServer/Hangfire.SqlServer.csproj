@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
     <RootNamespace>Hangfire.SqlServer</RootNamespace>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
@@ -22,18 +22,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Hangfire.Core\Hangfire.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)'!='net45'">
-    <PackageReference Include="Dapper" Version="1.50.7" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-    <PackageReference Include="Dapper" Version="1.50.1" />
-  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
+    <PackageReference Include="Dapper.StrongName">
+      <Version>1.50.2</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3' or '$(TargetFramework)'=='netstandard2.0'">
@@ -56,5 +51,15 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DefaultInstall.sql</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="Dapper.StrongName">
+      <Version>1.60.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Dapper.StrongName">
+      <Version>1.60.1</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

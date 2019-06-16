@@ -18,9 +18,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="Cronos" Version="0.7.0" />
     <PackageReference Include="MoreLinq.Source.MoreEnumerable.Pairwise" Version="1.0.1" />
     <PackageReference Include="LibLog" Version="1.5.0" />
-    <PackageReference Include="Cronos" Version="0.7.0" />
     <PackageReference Include="StackTraceFormatter.Source" Version="1.1.0" />
     <PackageReference Include="StackTraceParser.Source" Version="1.3.0" />
   </ItemGroup>
@@ -60,7 +60,7 @@
     <MSBuildFullPath>$(MSBuildProgramFiles32)\MSBuild\14.0\bin\MSBuild.exe</MSBuildFullPath>
     <RazorProjectFile>Razor.build</RazorProjectFile>
     <InnerTargets>GenerateRazorClasses;Build</InnerTargets>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 

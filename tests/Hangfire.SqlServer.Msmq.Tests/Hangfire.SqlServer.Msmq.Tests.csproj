@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>net452</TargetFrameworks>
     <NoWarn>0618</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
   <ItemGroup>
@@ -12,11 +14,11 @@
     <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hangfire.Core\Hangfire.Core.csproj" />
-    <ProjectReference Include="..\..\src\Hangfire.SqlServer\Hangfire.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\Hangfire.SqlServer.Msmq\Hangfire.SqlServer.Msmq.csproj" />
+    <ProjectReference Include="..\..\src\Hangfire.SqlServer\Hangfire.SqlServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
