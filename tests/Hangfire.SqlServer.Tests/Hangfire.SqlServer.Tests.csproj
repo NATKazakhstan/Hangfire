@@ -3,28 +3,30 @@
   <PropertyGroup>
     <TargetFrameworks>net452;netcoreapp2.1;</TargetFrameworks>
     <NoWarn>0618</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Dapper.StrongName" Version="1.60.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
     <PackageReference Include="Moq" Version="4.10.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Dapper" Version="1.50.7" />    
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />    
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
     <PackageReference Include="System.Data.SqlClient" Version="4.5.0" />    
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)'=='net452'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hangfire.Core\Hangfire.Core.csproj" />
     <ProjectReference Include="..\..\src\Hangfire.SqlServer\Hangfire.SqlServer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='net452'">
-    <Reference Include="System.Transactions" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +35,7 @@
 
   <Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
     <ItemGroup>
-      <ReferencePath Condition="'%(FileName)' == 'Dapper'">
+      <ReferencePath Condition="'%(FileName)' == 'Dapper.StrongName'">
         <Aliases>ReferencedDapper</Aliases>
       </ReferencePath>
     </ItemGroup>

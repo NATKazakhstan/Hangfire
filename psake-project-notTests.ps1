@@ -35,7 +35,7 @@ Task Test -Depends Merge -Description "Run unit and integration tests against me
     Exec { ls "tests\**\*.csproj" | % { dotnet test -c Release --no-build $_.FullName } }
 }
 
-Task Collect -Depends Test -Description "Copy all artifacts to the build folder." {
+Task Collect -Description "Copy all artifacts to the build folder." {
     Collect-Assembly "Hangfire.Core" "net45"
     Collect-Assembly "Hangfire.SqlServer" "net45"
     Collect-Assembly "Hangfire.SqlServer.Msmq" "net45"

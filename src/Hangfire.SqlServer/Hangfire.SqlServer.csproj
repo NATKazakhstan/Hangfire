@@ -28,8 +28,13 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net451'">
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
+    <PackageReference Include="Dapper.StrongName">
+      <Version>1.50.2</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3' or '$(TargetFramework)'=='netstandard2.0'">
@@ -60,11 +65,13 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Dapper.StrongName">
       <Version>1.50.4</Version>
+      <Version>1.60.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Dapper.StrongName">
       <Version>1.50.4</Version>
+      <Version>1.60.1</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
